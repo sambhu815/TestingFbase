@@ -448,9 +448,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/helveticaneue"
-                    android:text="Change Password"
+                    android:text="Profile Details"
                     android:textColor="@color/text" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_logout" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/helveticaneue"
+                    android:text="Logout"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 
