@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="icon">#FF4081</color>
+
+    <color name="lead">#434343</color>
+    <color name="text">#667277</color>
+    <color name="free">#bbbbbb</color>
+    <color name="Header_bg">#fafafa</color>
+    <color name="bg">#ECECEC</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+
+    <color name="header_line">#d4dae2</color>
+    <color name="url">#999999</color>
+
+    <color name="orange">#f46e24</color>
+    <color name="new_box">#fa9538</color>
+    <color name="blue">#4285F4</color>
+
+    <color name="company">#2a2a2a</color>
+    <color name="search_text">#555555</color>
+    <color name="search_box">#d4d4d4</color>
+    <color name="search_box_web_list">#d7d7d7</color>
+
+    <color name="menu_bg">#eef0f3</color>
+    <color name="menu_text">#f27700</color>
+    <color name="menu_text_bg">#488aee</color>
+    <color name="web_list_text">#2e89dc</color>
+
+    <color name="contact_box_info">#d9d9d9</color>
+    <color name="savelead">#4688f5</color>
+    <color name="sendmessage">#d7d3d4</color>
+
+    <color name="menu_lead_border">#bbc4d2</color>
+</resources>

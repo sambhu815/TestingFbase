@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_contact"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_error" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="40dp"
+            android:layout_toEndOf="@+id/iv_profile"
+            android:layout_toRightOf="@+id/iv_profile"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helveticaneue_bold"
+                android:singleLine="true"
+                android:text="Jacob Delgado"
+                android:textColor="@color/text"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_designation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helveticaneue"
+                android:singleLine="true"
+                android:text="Sales Associate"
+                android:textColor="@color/url"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_linkin"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_linkedin" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_contact"
+        android:layout_marginBottom="34dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="24dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/contact_bg"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tv_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/iv_close"
+                android:layout_toStartOf="@+id/iv_close"
+                android:fontFamily="@font/helveticaneue_bold"
+                android:singleLine="true"
+                android:text="Cheryl Russell"
+                android:textColor="@color/text"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="35dp"
+                android:padding="10dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_close_box" />
+
+            <TextView
+                android:id="@+id/tv_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_detail_name"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/helveticaneue"
+                android:text="Product Marketing Thermal Printing Plates 4) Product Marketing Thermal Printing Plates"
+                android:textColor="@color/text" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Current"
+            android:textColor="#a2a3a4" />
+
+        <TextView
+            android:id="@+id/tv_current"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/helveticaneue"
+            android:hint="Current"
+            android:text="Asterisk Group"
+            android:textColor="@color/text"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/contact_box_info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Previous"
+            android:textColor="#a2a3a4" />
+
+        <TextView
+            android:id="@+id/tv_previous"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/helveticaneue"
+            android:hint="Current"
+            android:text="Asterisk Group"
+            android:textColor="@color/text"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/contact_box_info" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Education"
+            android:textColor="#a2a3a4" />
+
+        <TextView
+            android:id="@+id/tv_education"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/helveticaneue"
+            android:hint="Current"
+            android:text="Asterisk Group"
+            android:textColor="@color/text"
+            android:textSize="12dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/contact_box_info" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="14dp"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="0.50"
+                android:background="@color/savelead"
+                android:elevation="5dp"
+                android:fontFamily="@font/helveticaneue"
+                android:gravity="center"
+                android:text="Saved as lead"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="0.50"
+                android:background="@color/sendmessage"
+                android:elevation="5dp"
+                android:fontFamily="@font/helveticaneue"
+                android:gravity="center"
+                android:text="Send Message"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

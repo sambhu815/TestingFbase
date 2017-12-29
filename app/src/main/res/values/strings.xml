@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Fastbase</string>
+
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
+
+    <string-array name="duration">
+        <item>All Time</item>
+        <item>1 Day</item>
+        <item>1 Week</item>
+        <item>3 Month</item>
+        <item>5 Month</item>
+    </string-array>
+</resources>
