@@ -1,8 +1,11 @@
 package com.fastbase;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
@@ -25,6 +28,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -75,12 +79,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<WebList> webLists;
     WebList web;
 
+    Dialog dialog;
     ArrayList<HashMap<String, String>> leadsList;
 
     ImageView iv_down;
     ImageView iv_lead, iv_hot, iv_ad, iv_total, iv_email;
+
     LinearLayout lin_menu, lin_duration, lin_property, lin_weblist, lin_password, lin_details;
-    RelativeLayout rl_setting, rl_web, rl_hot, rl_ad, rl_total, rl_email, rl_bg, rl_lock, lin_profile, rl_menu, rl_menu_open;
+    LinearLayout lin_logout;
+
+    RelativeLayout rl_setting, rl_web, rl_hot, rl_ad, rl_total, rl_bg, rl_lock, lin_profile, rl_menu, rl_menu_open;
     EditText edt_search;
     TextView tv_property, tv_periode, tv_totallead, tv_count, tv_name, tv_plan;
     TextView tv_webleads, tv_hot, tv_ad, tv_total, tv_email;
@@ -128,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         web = new WebList("All Websites", "0", "0");
         webLists.add(web);
 
+        str_id = tele_manager.getDeviceId();
         str_pid = "0";
         str_aid = "0";
         str_duration = "0";
@@ -145,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lin_weblist = (LinearLayout) findViewById(R.id.lin_weblist);
         lin_password = (LinearLayout) findViewById(R.id.lin_password);
         lin_details = (LinearLayout) findViewById(R.id.lin_details);
+        lin_logout = (LinearLayout) findViewById(R.id.lin_logout);
 
         rl_bg = (RelativeLayout) findViewById(R.id.rl_bg);
         rl_lock = (RelativeLayout) findViewById(R.id.rl_lock);
@@ -155,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rl_hot = (RelativeLayout) findViewById(R.id.rl_hot);
         rl_ad = (RelativeLayout) findViewById(R.id.rl_ad);
         rl_total = (RelativeLayout) findViewById(R.id.rl_total);
-        rl_email = (RelativeLayout) findViewById(R.id.rl_email);
 
         rl_menu = (RelativeLayout) findViewById(R.id.rl_menu);
         rl_menu_open = (RelativeLayout) findViewById(R.id.rl_menu_open);
@@ -195,12 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lin_weblist.setOnClickListener(this);
         lin_profile.setOnClickListener(this);
         rl_setting.setOnClickListener(this);
+        lin_logout.setOnClickListener(this);
 
         rl_web.setOnClickListener(this);
         rl_hot.setOnClickListener(this);
         rl_ad.setOnClickListener(this);
         rl_total.setOnClickListener(this);
-        rl_email.setOnClickListener(this);
+        //rl_email.setOnClickListener(this);
 
         isConnect = ConnectivityReceiver.isConnected();
         showSnack(isConnect);
@@ -417,6 +427,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 rl_setting.setVisibility(View.GONE);
                 iv_down.setImageDrawable(getResources().getDrawable(R.drawable.ic_down));
             }
+        } else if (view == lin_logout) {
+            rl_setting.setVisibility(View.GONE);
+            dialog = new Dialog(this);
+            Window window = dialog.getWindow();
+            window.requestFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.dialog_logout);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            Button btn_ok = (Button) dialog.findViewById(R.id.btn_ok);
+            Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+
+            btn_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    iv_loading.setVisibility(View.VISIBLE);
+                    new logout().execute();
+                }
+            });
+
+            btn_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         } else if (view == rl_web) {
             iv_lead.setImageDrawable(getResources().getDrawable(R.drawable.ic_webleads_active));
             iv_hot.setImageDrawable(getResources().getDrawable(R.drawable.ic_hot));
@@ -428,7 +466,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             rl_hot.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_ad.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_total.setBackgroundColor(getResources().getColor(R.color.Header_bg));
-            rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
+            //  rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
 
             tv_webleads.setTextColor(getResources().getColor(R.color.menu_text));
             tv_hot.setTextColor(getResources().getColor(R.color.text));
@@ -468,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             rl_hot.setBackgroundColor(getResources().getColor(R.color.menu_bg));
             rl_ad.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_total.setBackgroundColor(getResources().getColor(R.color.Header_bg));
-            rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
+            //rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
 
             tv_webleads.setTextColor(getResources().getColor(R.color.text));
             tv_hot.setTextColor(getResources().getColor(R.color.menu_text));
@@ -508,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             rl_hot.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_ad.setBackgroundColor(getResources().getColor(R.color.menu_bg));
             rl_total.setBackgroundColor(getResources().getColor(R.color.Header_bg));
-            rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
+            // rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
 
             tv_webleads.setTextColor(getResources().getColor(R.color.text));
             tv_hot.setTextColor(getResources().getColor(R.color.text));
@@ -548,7 +586,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             rl_hot.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_ad.setBackgroundColor(getResources().getColor(R.color.Header_bg));
             rl_total.setBackgroundColor(getResources().getColor(R.color.menu_bg));
-            rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
+            // rl_email.setBackgroundColor(getResources().getColor(R.color.Header_bg));
 
             tv_webleads.setTextColor(getResources().getColor(R.color.text));
             tv_hot.setTextColor(getResources().getColor(R.color.text));
@@ -577,7 +615,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
             rl_bg.setVisibility(View.GONE);
 
-        } else if (view == rl_email) {
+        } /*else if (view == rl_email) {
             iv_lead.setImageDrawable(getResources().getDrawable(R.drawable.ic_webleads));
             iv_hot.setImageDrawable(getResources().getDrawable(R.drawable.ic_hot));
             iv_ad.setImageDrawable(getResources().getDrawable(R.drawable.ic_ad));
@@ -614,7 +652,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             overridePendingTransition(R.anim.anim_slide_out_right, R.anim.anim_slide_in_right);
             rl_bg.setVisibility(View.GONE);
 
-        }
+        }*/
     }
 
     @Override
@@ -649,6 +687,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 Response response = client.newCall(request).execute();
                 Log.e("Logon Details :", response.body().string());
+
+                return response.body().string();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (pd.isShowing()) {
+                pd.dismiss();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -727,17 +778,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (pd.isShowing()) {
-                pd.dismiss();
             }
         }
     }
@@ -1062,6 +1102,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             }
                         });
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private class logout extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                client = new OkHttpClient();
+
+                request = new Request.Builder()
+                        .url(AppConstant.Logout
+                                + "Key=" + str_id + "&"
+                                + "Token=" + str_token)
+                        .get()
+                        .build();
+
+                Response response = client.newCall(request).execute();
+                Log.e("Logout :", response.body().string());
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        if (e instanceof SocketTimeoutException) {
+                            Snackbar.make(findViewById(android.R.id.content), "Error when connecting to server. Please try again.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(final Call call, final Response response) throws IOException {
+
+                        if (response != null) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String list = null;
+                                    try {
+                                        list = response.body().string();
+                                        JSONObject object = new JSONObject(list);
+
+                                        str_success = object.getString(AppConstant.Tag_IsSuccess);
+                                        str_error = object.getString(AppConstant.Tag_IsError);
+
+                                        if (str_success.equals("1") || str_error.equals("0")) {
+                                            manager.logOut();
+                                            iv_loading.setVisibility(View.GONE);
+                                        }
+                                    } catch (final JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
             } catch (Exception e) {

@@ -12,7 +12,7 @@ public class AppConstant {
     public static final String WebLoginCheck = base_url + "WebLoginCheck?";
     public static final String FetchLeads = base_url + "FetchLeads?";
     public static final String FetchProfile = base_url + "FetchProfile?";
-
+    public static final String Logout = base_url + "Logout?";
 
     /*-----------resonance tags--------------------*/
     public static final String Tag_IsSuccess = "IsSuccess";

@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -113,7 +115,6 @@ public class ProfileTab_Fragment extends Fragment implements View.OnClickListene
 
         tv_name = (TextView) view.findViewById(R.id.tv_name);
         tv_code = (TextView) view.findViewById(R.id.tv_code);
-        tv_url = (TextView) view.findViewById(R.id.tv_url);
         tv_profile = (TextView) view.findViewById(R.id.tv_profile);
         tv_visitor = (TextView) view.findViewById(R.id.tv_visitor);
         tv_contact = (TextView) view.findViewById(R.id.tv_contact);
@@ -138,7 +139,6 @@ public class ProfileTab_Fragment extends Fragment implements View.OnClickListene
 
         tv_name.setText(str_cname);
         tv_code.setText(str_code);
-        tv_url.setText(str_url);
 
         if (str_fav.isEmpty()) {
             iv_url.setImageResource(R.mipmap.ic_launcher);
@@ -189,6 +189,23 @@ public class ProfileTab_Fragment extends Fragment implements View.OnClickListene
         }
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        tv_url = (TextView) activity.findViewById(R.id.tv_url);
+        tv_url.setText(str_url);
+
+        tv_url.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(Intent.ACTION_VIEW);
+                in.setData(Uri.parse(str_url));
+                activity.startActivity(in);
+            }
+        });
     }
 
     @Override

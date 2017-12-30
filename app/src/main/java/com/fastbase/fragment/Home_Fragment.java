@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,7 +68,9 @@ public class Home_Fragment extends Fragment {
 
     String str_success, str_error, str_query, str_pid, str_aid, str_duration, str_token, str_pageno, str_pagesize;
     public static String str_type;
-    public static int page;
+    public static int page = 1;
+
+    boolean userScrolled = false;
 
     public Home_Fragment() {
     }
@@ -156,7 +159,29 @@ public class Home_Fragment extends Fragment {
                 }
             }
         });
+
+        implementScrollListener();
         return view;
+    }
+
+    private void implementScrollListener() {
+        list_lead.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    userScrolled = true;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+                if (userScrolled && firstVisibleItem + visibleItemCount == totalItemCount) {
+                    userScrolled = false;
+                    new WebLeadsLoadMore().execute();
+                }
+            }
+        });
     }
 
     private void RefreshWebLeads() {
@@ -438,6 +463,132 @@ public class Home_Fragment extends Fragment {
                     }
                 }
             });
+        }
+    }
+
+    private class WebLeadsLoadMore extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                str_pageno = "" + page++;
+                client = new OkHttpClient();
+
+                request = new Request.Builder()
+                        .url(AppConstant.FetchLeads
+                                + "Query=" + str_query
+                                + "&LeadType=" + str_type
+                                + "&ProfileId=" + str_pid
+                                + "&AccountId=" + str_aid
+                                + "&Duration=" + str_duration
+                                + "&PageNo=" + str_pageno
+                                + "&PageSize=" + str_pagesize
+                                + "&Token=" + str_token)
+                        .get()
+                        .build();
+
+                Response response = client.newCall(request).execute();
+                Log.e("Leads List :", response.body().string());
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        if (e instanceof SocketTimeoutException) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Snackbar.make(activity.findViewById(android.R.id.content), "Error when connecting to server. Please try again.", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(final Call call, final Response response) throws IOException {
+
+                        if (response != null) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String list = null;
+                                    try {
+                                        list = response.body().string();
+                                        JSONObject object = new JSONObject(list);
+
+                                        str_success = object.getString(AppConstant.Tag_IsSuccess);
+                                        str_error = object.getString(AppConstant.Tag_IsError);
+
+                                        if (str_success.equals("1") || str_error.equals("0")) {
+
+                                            JSONArray array = object.getJSONArray(AppConstant.Tag_WebLeads);
+
+                                            if (array.length() == 0) {
+                                                activity.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+                                                        alertDialogBuilder.setTitle("Currently Leads Unavailable for this Website.");
+
+                                                        alertDialogBuilder
+                                                                .setCancelable(true)
+                                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                    }
+                                                                });
+                                                        AlertDialog alertDialog = alertDialogBuilder.create();
+                                                        alertDialog.show();
+                                                    }
+                                                });
+                                            } else {
+                                                for (int i = 0; i < array.length(); i++) {
+                                                    JSONObject obj = array.getJSONObject(i);
+
+                                                    HashMap<String, String> leads = new HashMap<String, String>();
+                                                    leads.put(AppConstant.Tag_LeadId, obj.getString(AppConstant.Tag_LeadId));
+                                                    leads.put(AppConstant.Tag_CompanyName, obj.getString(AppConstant.Tag_CompanyName));
+                                                    leads.put(AppConstant.Tag_CountryCode, obj.getString(AppConstant.Tag_CountryCode));
+                                                    leads.put(AppConstant.Tag_Website, obj.getString(AppConstant.Tag_Website));
+                                                    leads.put(AppConstant.Tag_VisitedDate, obj.getString(AppConstant.Tag_VisitedDate));
+                                                    leads.put(AppConstant.Tag_SpendTime, obj.getString(AppConstant.Tag_SpendTime));
+                                                    leads.put(AppConstant.Tag_Faviconl, obj.getString(AppConstant.Tag_Faviconl));
+                                                    leads.put(AppConstant.Tag_CountryFlag, obj.getString(AppConstant.Tag_CountryFlag));
+
+                                                    leadsList.add(leads);
+                                                }
+                                            }
+                                            webLeadsAdapter = new WebLeadsAdapter(activity, leadsList, str_token);
+                                            list_lead.setAdapter(webLeadsAdapter);
+                                        } else {
+                                            str_error = object.getString("ErrorMessage");
+                                            final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+
+                                            alertDialogBuilder.setTitle(str_error);
+
+                                            alertDialogBuilder
+                                                    .setCancelable(true)
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                        }
+                                                    });
+                                            AlertDialog alertDialog = alertDialogBuilder.create();
+                                            alertDialog.show();
+                                        }
+                                    } catch (final JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
